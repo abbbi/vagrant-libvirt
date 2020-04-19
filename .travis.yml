@@ -13,9 +13,9 @@ script:
 - sudo bundle --binstubs /tmp/exec
 
 # test up / destroy
-- sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant up || exit 1
+- sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant up --provider=libvirt || exit 1
 - sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant destroy -f || exit 1
 
 # test up / provision / destroy
-- sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant up || exit 1
+- sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant up --provider=libvirt || exit 1
 - sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant destroy -f || exit 1
