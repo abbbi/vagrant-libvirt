@@ -11,6 +11,7 @@ script:
 - git revert 608037c15c099161ba3354d5083c4dcb99405fba --no-edit
 - sudo bundle install
 - sudo bundle --binstubs /tmp/exec
+- cd ..
 
 # test up / destroy
 - sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant up --provider=libvirt || exit 1
