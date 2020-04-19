@@ -20,3 +20,9 @@ script:
 # test up / provision / destroy
 - sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant up --provider=libvirt || exit 1
 - sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant destroy -f || exit 1
+
+# test adding a second disk
+- sudo VAGRANT_CWD=tests/second_disk /tmp/exec/vagrant up --provider=libvirt || exit 1
+- sudo VAGRANT_CWD=tests/second_disk /tmp/exec/vagrant destroy -f || exit 1
+
+
