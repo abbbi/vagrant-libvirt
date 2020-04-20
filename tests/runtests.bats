@@ -34,3 +34,13 @@ VAGRANT_CMD=/tmp/exec/vagrant
   [ $(expr "$output" : ".*second_disk_default-vdb.*") -ne 0  ]
   run ${VAGRANT_CMD} destroy -f
 }
+
+@test "Spin up virtual machine, adjust memory settings" {
+  export VAGRANT_CWD=tests/memory
+  run ${VAGRANT_CMD} destroy -f
+  run ${VAGRANT_CMD} up --provider=libvirt
+  [ "$status" -eq 0 ]
+  echo "${output}"
+  [ $(expr "$output" : ".*Memory.*1000M.*") -ne 0  ]
+  run ${VAGRANT_CMD} destroy -f
+}
