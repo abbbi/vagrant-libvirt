@@ -1,4 +1,4 @@
-VAGRANT_CMD=vagrant
+VAGRANT_CMD=/tmp/exec/vagrant
 
 @test "Spin up and destroy simple virtual machine" {
   export VAGRANT_CWD=tests/simple

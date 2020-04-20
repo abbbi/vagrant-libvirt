@@ -3,7 +3,7 @@ language: python
 
 install:
 # Install libvrt & KVM (see https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)
-- sudo apt-get update && sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev
+- sudo apt-get update && sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev bats 1>/dev/null
 
 script:
 - git clone https://github.com/vagrant-libvirt/vagrant-libvirt/
@@ -13,16 +13,5 @@ script:
 - sudo bundle --binstubs /tmp/exec
 - cd ..
 
-# test up / destroy
-- sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant up --provider=libvirt || exit 1
-- sudo VAGRANT_CWD=tests/simple /tmp/exec/vagrant destroy -f || exit 1
-
-# test up / provision / destroy
-- sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant up --provider=libvirt || exit 1
-- sudo VAGRANT_CWD=tests/simple_provision_shell /tmp/exec/vagrant destroy -f || exit 1
-
-# test adding a second disk
-- sudo VAGRANT_CWD=tests/second_disk /tmp/exec/vagrant up --provider=libvirt || exit 1
-- sudo VAGRANT_CWD=tests/second_disk /tmp/exec/vagrant destroy -f || exit 1
-
-
+# execue tests via BATS
+- sudo bats -f tests/runtests.bats
