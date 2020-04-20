@@ -1,65 +1,82 @@
 VAGRANT_CMD=/tmp/exec/vagrant
 #VAGRANT_CMD=vagrant
+VAGRANT_OPT="--provider=libvirt"
+
+cleanup() {
+    ${VAGRANT_CMD} destroy -f
+    if [ $? == "0" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
 
 @test "Spin up and destroy simple virtual machine" {
   export VAGRANT_CWD=tests/simple
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   echo "status = ${status}"
   [ "$status" -eq 0 ]
-  run  ${VAGRANT_CMD} destroy -f
-  echo "status = ${status}"
-  [ "$status" -eq 0 ]
+  cleanup
 }
 
 @test "Spin up simple virtual machine, provision via shell" {
   export VAGRANT_CWD=tests/simple_provision_shell
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   echo "status = ${status}"
   [ "$status" -eq 0 ]
   echo "status = ${status}"
-  echo "${output}"
   [ $(expr "$output" : ".*Hello.*") -ne 0  ]
-  run ${VAGRANT_CMD} destroy -f
-  echo "status = ${status}"
+  echo "${output}"
+  cleanup
+}
+
+@test "Spin up simple virtual machine with custom default_prefix" {
+  export VAGRANT_CWD=tests/default_prefix
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   [ "$status" -eq 0 ]
+  echo "status = ${status}"
+  [ $(expr "$output" : ".*changed_default_prefix_default.*") -ne 0  ]
+  echo "${output}"
+  cleanup
 }
 
 @test "Spin up virtual machine with second disk" {
   export VAGRANT_CWD=tests/second_disk
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   [ "$status" -eq 0 ]
   echo "${output}"
   [ $(expr "$output" : ".*second_disk_default-vdb.*") -ne 0  ]
-  run ${VAGRANT_CMD} destroy -f
+  cleanup
 }
 
 @test "Spin up virtual machine, adjust memory settings" {
   export VAGRANT_CWD=tests/memory
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   [ "$status" -eq 0 ]
   echo "${output}"
   [ $(expr "$output" : ".*Memory.*1000M.*") -ne 0  ]
-  run ${VAGRANT_CMD} destroy -f
+  cleanup
 }
 
 @test "Spin up virtual machine, adjust cpu settings" {
   export VAGRANT_CWD=tests/cpus
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   [ "$status" -eq 0 ]
   echo "${output}"
   [ $(expr "$output" : ".*Cpus.*2.*") -ne 0  ]
-  run ${VAGRANT_CMD} destroy -f
+  cleanup
 }
 
 @test "Spin up virtual machine, add private network, check if IP is reachable" {
   export VAGRANT_CWD=tests/private_network
-  run ${VAGRANT_CMD} destroy -f
-  run ${VAGRANT_CMD} up --provider=libvirt
+  cleanup
+  run ${VAGRANT_CMD} up ${VAGRANT_OPT}
   [ "$status" -eq 0 ]
   echo "${output}"
   [ $(expr "$output" : ".*Cpus.*2.*") -ne 0  ]
@@ -67,5 +84,5 @@ VAGRANT_CMD=/tmp/exec/vagrant
   [ "$status" -eq 0 ]
   echo "${output}"
   [ $(expr "$output" : ".*alive.*") -ne 0  ]
-  run ${VAGRANT_CMD} destroy -f
+  cleanup
 }
