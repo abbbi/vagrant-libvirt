@@ -23,7 +23,9 @@ module VagrantPlugins
           fog_pool = ProviderLibvirt::Util::Collection.find_matching(
             env[:machine].provider.driver.connection.pools.all, config.storage_pool_name
           )
-          @logger.debug("**** Pool #{fog_pool.name}")
+          if fog_pool
+              @logger.debug("**** Pool #{fog_pool.name}")
+          end
 
           # This is name of newly created image for vm.
           name = "#{env[:domain_name]}.img"
