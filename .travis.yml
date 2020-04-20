@@ -10,7 +10,7 @@ script:
 - cd vagrant-libvirt
 - git revert 608037c15c099161ba3354d5083c4dcb99405fba --no-edit
 - sudo bundle install
-- sudo bundle --binstubs /tmp/exec
+- sudo bundle --binstubs /tmp/exec 1>/dev/null
 - cd ..
 
 # execue tests via BATS
