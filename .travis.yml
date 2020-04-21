@@ -29,6 +29,7 @@ rvm:
   - 2.6.1
 
 matrix:
+  allow_failures:
     - env: VAGRANT_VERSION=master
   exclude:
     - env: VAGRANT_VERSION=v2.0.4
