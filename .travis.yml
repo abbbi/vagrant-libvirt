@@ -1,17 +1,42 @@
 dist: bionic
-language: python
+language: ruby
 
-install:
-# Install libvrt & KVM (see https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)
-- sudo apt-get update 1>/dev/null && sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev bats fping 1>/dev/null
+before_install:
+- sudo apt-get update 1>/dev/null 
+- sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev bats fping 1>/dev/null
 
-script:
-- git clone https://github.com/vagrant-libvirt/vagrant-libvirt/
-- cd vagrant-libvirt
-- git revert 608037c15c099161ba3354d5083c4dcb99405fba --no-edit
-- sudo bundle install 1>/dev/null
-- sudo bundle --binstubs /tmp/exec 1>/dev/null
-- cd ..
+#script:
+#- git clone https://github.com/vagrant-libvirt/vagrant-libvirt/
+#- cd vagrant-libvirt
+#- git revert 608037c15c099161ba3354d5083c4dcb99405fba --no-edit
+#- sudo bundle install 1>/dev/null
+#- sudo bundle --binstubs /tmp/exec 1>/dev/null
+#- cd ..
+
+install: sudo bundle install
+
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  matrix:
+    - VAGRANT_VERSION=v2.0.4
+    - VAGRANT_VERSION=v2.1.5
+    - VAGRANT_VERSION=v2.2.3
+rvm:
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+  - 2.6.1
+
+matrix:
+    - env: VAGRANT_VERSION=master
+  exclude:
+    - env: VAGRANT_VERSION=v2.0.4
+      rvm: 2.6.1
+    - env: VAGRANT_VERSION=v2.1.5
+      rvm: 2.6.1
 
 # execue tests via BATS
+script:
+- sudo vagrant --version
 - sudo bats tests/runtests.bats
