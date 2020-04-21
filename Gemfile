@@ -12,9 +12,8 @@ group :development do
       tag: ENV['VAGRANT_VERSION']
   else
     gem 'vagrant', :git => 'https://github.com/hashicorp/vagrant.git'
+    gem 'vagrant-spec', :github => 'hashicorp/vagrant-spec', :ref => '161128f2216cee8edb7bcd30da18bd4dea86f98a'
   end
-
-  gem 'vagrant-spec', :github => 'hashicorp/vagrant-spec', :ref => '161128f2216cee8edb7bcd30da18bd4dea86f98a'
 
   gem 'pry'
 end
