@@ -12,14 +12,6 @@ install:
   - sudo bundle install 1>/dev/null
   - sudo bundle --binstubs /tmp/exec 1>/dev/null
 
-#script:
-#- git clone https://github.com/vagrant-libvirt/vagrant-libvirt/
-#- cd vagrant-libvirt
-#- git revert 608037c15c099161ba3354d5083c4dcb99405fba --no-edit
-#- sudo bundle install 1>/dev/null
-#- sudo bundle --binstubs /tmp/exec 1>/dev/null
-#- cd ..
-
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
