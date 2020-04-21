@@ -1,9 +1,16 @@
 dist: bionic
 language: ruby
 
+
 before_install:
-- sudo apt-get update 1>/dev/null 
-- sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev bats fping 1>/dev/null
+  - gem update --system --conservative || (gem i "rubygems-update:~>2.7" --no-document && update_rubygems)
+  - gem update bundler --conservative
+  - sudo apt-get update 1>/dev/null 
+  - sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev ruby-bundler bsdtar libz-dev libxml2-dev bats fping 1>/dev/null
+
+install:
+  - sudo bundle install 1>/dev/null
+  - sudo bundle --binstubs /tmp/exec 1>/dev/null
 
 #script:
 #- git clone https://github.com/vagrant-libvirt/vagrant-libvirt/
@@ -12,8 +19,6 @@ before_install:
 #- sudo bundle install 1>/dev/null
 #- sudo bundle --binstubs /tmp/exec 1>/dev/null
 #- cd ..
-
-install: sudo bundle install
 
 env:
   global:
@@ -32,5 +37,5 @@ matrix:
 
 # execue tests via BATS
 script:
-- sudo vagrant --version
+- sudo /tmp/exec/vagrant --version
 - sudo bats tests/runtests.bats
