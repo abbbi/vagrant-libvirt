@@ -16,7 +16,7 @@ env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   matrix:
-    - VAGRANT_VERSION=v2.2.7
+    - VAGRANT_VERSION=v2.2.4
 rvm:
     - 2.5.7
 
@@ -24,7 +24,7 @@ matrix:
   include:
     - env: VAGRANT_VERSION=master
       rvm: 2.5.7
-    - env: VAGRANT_VERSION=v2.2.7
+    - env: VAGRANT_VERSION=v2.2.4
       rvm: 2.5.7
 
 # execue tests via BATS
